@@ -9,12 +9,6 @@ class Setup(commands.Cog):
     async def on_ready(self):
         print('We have logged in as {0.user}'.format(self.client))
 
-        for channel in self.client.get_all_channels():
-            print(channel)
-
-        for member in self.client.get_all_members():
-            print(member)
-
 
 def setup(client):
     client.add_cog(Setup(client))
