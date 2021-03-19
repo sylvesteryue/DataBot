@@ -6,10 +6,10 @@ class TextActivity(commands.Cog):
         self.client = client
 
     
-        @commands.Cog.listener()
-        async def on_message(self, message):
-            #keep track of messages here
-            print(str(message.author) + " sent a message")
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        #keep track of messages here
+        print(str(message.author) + " sent a message")
 
 
 def setup(client):
