@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext import tasks
 import datetime
+import utils.db
 
 class VoiceActivity(commands.Cog):
     def __init__(self, client):
@@ -20,14 +21,15 @@ class VoiceActivity(commands.Cog):
         self.update_voice_activity.cancel()
 
 
-    @tasks.loop(seconds=1.0)
+    @tasks.loop(seconds=30.0)
     async def update_voice_activity(self):
         print("hi")
         for guild in self.client.guilds:
             channels = [channel for channel in guild.channels if channel.type == discord.ChannelType.voice]
             members = [member for channel in channels for member in channel.voice_states.keys()]
             #members = [guild.get_member(member) for channel in channels for member in channel.voice_states.keys()]
-            entry = {"timestamp" : datetime.datetime.utcnow(), "guild_id" : guild.id, "members" : members}
+            utils.db.add_guild_voice_activity(datetime.datetime.utcnow(), guild.id, members)
+            entry = {"timestamp" : datetime.datetime.utcnow(), "guild_id" : guild.id, "members_id" : members}
             print(entry)
 
     @commands.command()
