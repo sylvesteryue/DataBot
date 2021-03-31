@@ -14,9 +14,34 @@ def add_guild_voice_activity(time, guild_id, members_id):
     print(x)
 
 
+def member_voice_activity(time, guild_id, member_id, join_type):
+    col = db["member_voice_activity"]
+    filter = {'guild_id': guild_id, 'member_id': member_id}
+    doc = col.find(filter)
+    new_value = {"guild_id": guild_id, "member_id": member_id}
+    x = col.update(filter, {"$set": new_value, "$push": {"actions" : {"timestamp" : datetime.datetime.utcnow(), "join_type": join_type}}}, upsert=True)
+    print(x)
+
 
 def add_channel_voice_activity(time, guild_id, channel_id, members_id):
     col = db["channel_voice_activity"]
 
-def add_text_activity(time, guild_id, author_id, channel_id):
-    col = db["text_voice_activity"]
+
+def add_member_text_activity(guild_id, author_id, channel_id):
+    col = db["member_text_activity"]
+
+    filter = {'guild_id': guild_id, 'author_id': author_id}
+    doc = col.find(filter)
+    new_value = {"guild_id": guild_id, "author_id": author_id}
+    x = col.update(filter, {"$set": new_value, "$inc": {"num_messages" : 1}}, upsert=True)
+    print(x)
+
+
+def add_channel_text_activity(guild_id, author_id, channel_id):
+    col = db["channel_text_activity"]
+
+    filter = {'guild_id': guild_id, 'channel_id': channel_id}
+    doc = col.find(filter)
+    new_value = {"guild_id": guild_id, "channel_id": channel_id}
+    x = col.update(filter, {"$set": new_value, "$inc": {"num_messages" : 1}}, upsert=True)
+    print(x)

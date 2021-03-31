@@ -10,6 +10,10 @@ class Setup(commands.Cog):
     async def on_ready(self):
         print('We have logged in as {0.user}'.format(self.client))
 
+    @commands.Cog.listener()
+    async def on_member_join(self):
+        pass
+
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):

@@ -15,6 +15,11 @@ class VoiceActivity(commands.Cog):
         #keep track of voice channel activity here
         if before.channel is None and after.channel is not None:
             print(str(member) + " in " + member.guild.name + " joined " + str(after.channel) + " " + str(datetime.datetime.utcnow()))
+            utils.db.member_voice_activity(datetime.datetime.utcnow(), member.guild.id, member.id, "join")
+
+        if before.channel is not None and after.channel is None:
+            print(str(member) + " in " + member.guild.name + " left " + str(after.channel) + " " + str(datetime.datetime.utcnow()))
+            utils.db.member_voice_activity(datetime.datetime.utcnow(), member.guild.id, member.id, "leave")
 
 
     def cog_unload(self):
